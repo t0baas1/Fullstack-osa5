@@ -1,5 +1,29 @@
 import React from 'react'
 import ShowAll from './ShowAll'
+import blogService from '../services/blogs'
+
+const addLike = (blog) => {
+
+  //const newLikes = blog.likes
+  console.log("tänne päästy")
+
+  const blogObject = {
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes + 1
+  }
+
+  console.log("mites tänne")
+
+  blogService
+  .update(blog.id, blogObject)
+  .then(returnedBlog => {
+    //TODO: Tähän se särkee
+    //setBlogs(blogs.map(blog => blog.id === id ? blog.id=))
+    console.log("ok")
+  })
+}
 
 const Blog = ({blog}) => {
   const blogStyle = {
@@ -15,7 +39,7 @@ const Blog = ({blog}) => {
       <div>
         <div>{blog.title} {blog.author} <ShowAll buttonLabel="view">
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button>like</button></div>
+        <div>likes {blog.likes} <button onClick={() => addLike(blog)}>like</button></div>
         </ShowAll>
         </div>
       </div>
