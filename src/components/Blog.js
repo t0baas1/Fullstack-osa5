@@ -1,4 +1,5 @@
 import React from 'react'
+import ShowAll from './ShowAll'
 
 const Blog = ({blog}) => {
   const blogStyle = {
@@ -12,8 +13,12 @@ const Blog = ({blog}) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author} <button>view</button>
-      </div> 
+        <div>{blog.title} {blog.author} <ShowAll buttonLabel="view">
+        <div>{blog.url}</div>
+        <div>likes {blog.likes} <button>like</button></div>
+        </ShowAll>
+        </div>
+      </div>
     </div>
   )
 }

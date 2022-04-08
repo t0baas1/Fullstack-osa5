@@ -4,7 +4,6 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Error from './components/Error'
 import Notification from './components/Notification'
-import AddBlog from './components/AddBlog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 
@@ -60,18 +59,6 @@ const App = () => {
     }, 5000)
   }
 
-  }
-
-  const handleTitleChange = (event) => {
-    setNewTitle(event.target.value)
-  }
-  
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setNewUrl(event.target.value)
   }
 
   const addBlog = (event) => {
@@ -170,7 +157,7 @@ const App = () => {
           </Togglable>
       </div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog}/>
       )}
     </div>
   )
