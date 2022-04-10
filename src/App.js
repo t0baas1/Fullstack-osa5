@@ -65,6 +65,7 @@ const App = () => {
       title: newTitle,
       author: newAuthor,
       url: newUrl,
+      likes: 0,
     }
 
     console.log(blogObject.name)
@@ -92,6 +93,7 @@ const App = () => {
   }
 
   const toggleLogout = (event) => {
+    event.preventDefault()
     window.localStorage.clear()
     window.location.reload(true)
   }

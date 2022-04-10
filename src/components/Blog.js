@@ -4,7 +4,6 @@ import blogService from '../services/blogs'
 import App from '../App'
 
 
-
 const deleteBlog = (blog) => {
   if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)){
     blogService
@@ -21,7 +20,6 @@ const deleteBlog = (blog) => {
 }
 
 const addLike = (blog) => {
-
   const blogObject = {
     title: blog.title,
     author: blog.author,
@@ -51,14 +49,22 @@ const Blog = ({ blog }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
-        <div>{blog.title} {blog.author} <ShowAll buttonLabel="view">
-          <div>{blog.url}</div>
-          <div>likes {blog.likes} <button onClick={() => addLike(blog)}>like</button></div>
-          <div><button onClick={() => deleteBlog(blog)}>remove</button></div>
-        </ShowAll>
-        </div>
+      <div className='blog'>
+        {blog.title}  {blog.author}
       </div>
+      <ShowAll buttonLabel="view">
+        <ul>
+          <ul>
+            {blog.url}
+          </ul>
+          <ul>
+            likes {blog.likes} <button onClick={() => addLike(blog)}>like</button>
+          </ul>
+          <ul>
+            <button onClick={() => deleteBlog(blog)}>remove</button>
+          </ul>
+        </ul>
+      </ShowAll>
     </div>
   )
 }
