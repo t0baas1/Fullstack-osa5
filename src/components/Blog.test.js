@@ -25,7 +25,7 @@ test('clicking the button calls event handler once', async () => {
   const mockHandler = jest.fn()
 
   render(
-    <Blog blog={blog} buttonLabel={mockHandler} />
+    <Blog blog={blog} />
   )
 
   const button = screen.getByText('view')
