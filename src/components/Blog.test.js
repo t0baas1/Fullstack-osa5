@@ -1,35 +1,29 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
-test('renders content', () => {
+
+test('when clicking container all info is shown', () => {
   const blog = {
-    title: 'Component testing is done with react-testing-library',
-    author: 'Tester tester'
-  }
-
-  render(<Blog blog={blog} />)
-
-  const element = screen.getByText('Component testing is done with react-testing-library Tester tester')
-  expect(element).toBeDefined()
-})
-
-test('clicking the button calls event handler once', async () => {
-  const blog = {
-    title: 'Component testing is done with react-testing-library',
-    author: 'Tester tester'
+    title: 'Testiympäristön toinen blogi',
+    author: 'Testi testikäyttäjä',
+    url: 'www.testi.com',
+    likes: 666
   }
 
   const mockHandler = jest.fn()
 
-  render(
-    <Blog blog={blog} />
+  const { getByTestId } = render (
+    <Blog blog={blog} onClick={mockHandler} />
   )
+  const content = getByTestId('container')
+  expect(content).toHaveTextContent('Testiympäristön toinen blogi')
+  expect(content).not.toHaveTextContent('www.testi.com')
+  expect(content).not.toHaveTextContent('likes 50')
+  fireEvent.click(content)
 
-  const button = screen.getByText('view')
-  userEvent.click(button)
-
-  expect(mockHandler.mock.calls).toHaveLength(1)
+  expect(content).toHaveTextContent('Testiympäristön toinen blogi')
+  expect(content).toHaveTextContent('www.testi.com')
+  expect(content).toHaveTextContent('likes 666')
 })

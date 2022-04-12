@@ -1,50 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import ShowAll from './ShowAll'
-import blogService from '../services/blogs'
+import React, { useState } from 'react'
 
-
-const Blog = ({ blog }) => {
-
-  const [likes, setNewLikes] = useState(blog.likes)
-
-  useEffect(() => {
-    setNewLikes(blog.likes)
-  })
-
-  const deleteBlog = (blog) => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)){
-      blogService
-        .deleteBlog(blog.id)
-        .then(returnedBlog => {
-          console.log(returnedBlog)
-          console.log('poisto ok')
-          window.location.reload(true)
-        }).catch(e => {
-          console.log(e)
-        })
-    }
-  }
-
-  const addLike = (blog) => {
-    const blogObject = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1
-    }
-
-    console.log(blogObject)
-
-    blogService
-      .update(blog.id, blogObject)
-      .then(newBlog => {
-        console.log(newBlog)
-        setNewLikes(likes + 1)
-      }).catch(e => {
-        console.log(e)
-      })
-  }
-
+const Blog = ({ blog, addLike, removeBlog, user }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -54,22 +10,38 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const [showAll, setShowAll] = useState(false)
+  const remove = () => {
+    if (blog.user && blog.user.username === user.username) {
+      return (
+        <button onClick={(event) => {
+          //TODO Varmista
+          event.stopPropagation()
+          removeBlog(blog.id)
+        }}> remove </button>
+      )
+    } else {
+      return null
+    }
+  }
+
   return (
-    <div style={blogStyle}>
-      <div className='blog'>
-        {blog.title}  {blog.author}
+    <div className="blog" style={blogStyle}>
+      <div data-testid="container" onClick={() => setShowAll(!showAll)}>
+        {showAll
+          ? <div>
+            {blog.title} {blog.author}<br />
+            {blog.url}<br />
+            likes {blog.likes} <button onClick={(event) => {
+              event.stopPropagation()
+              addLike(blog.id)
+            }}>like</button><br />
+            {blog.name}<br/>
+            {remove()}
+          </div>
+          : <div>{blog.title} {blog.author}</div>
+        }
       </div>
-      <ShowAll buttonLabel="view">
-        <ul>
-          {blog.url}
-        </ul>
-        <ul>
-          likes {blog.likes} <button onClick={() => addLike(blog)}>like</button>
-        </ul>
-        <ul>
-          <button onClick={() => deleteBlog(blog)}>remove</button>
-        </ul>
-      </ShowAll>
     </div>
   )
 }

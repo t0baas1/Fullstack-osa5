@@ -124,6 +124,32 @@ const App = () => {
     </form>
   )
 
+  const addLike = id => {
+    console.log(id)
+    const blog = blogs.find(b => b.id === id)
+    const newBlog = { ...blog, likes: blog.likes + 1 }
+
+    blogService
+      .update(id, newBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      })
+  }
+
+  const removeBlog = id => {
+    const blog = blogs.find(blog => blog.id === id)
+    const confirmRemoval = window.confirm(`remove blog ${blog.title} by author ${blog.author}`)
+
+    if (confirmRemoval) {
+      blogService
+        .deleteBlog(id)
+        .then(() => {
+          setBlogs(blogs.filter(blog => blog.id !== id))
+        })
+    }
+
+  }
+
 
   if (user === null) {
     return (
@@ -140,10 +166,7 @@ const App = () => {
       <h2>blogs</h2>
       <Error message={errorMessage} />
       <Notification message={addMessage} />
-      <div>
-        {user.name} logged in
-        <button onClick={toggleLogout}>logout</button>
-      </div>
+      <h3>{user.name} logged in <button onClick={toggleLogout}>logout</button></h3>
       <div>
         <Togglable buttonLabel="create new blog">
           <BlogForm
@@ -157,9 +180,9 @@ const App = () => {
           />
         </Togglable>
       </div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog}/>
-      ).sort((a, b) => b.likes - a.likes)}
+      {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} addLike={addLike} removeBlog={removeBlog} user={user}/>
+      )}
     </div>
   )
 }
